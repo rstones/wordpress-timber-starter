@@ -11,6 +11,8 @@ services:
             MYSQL_USER: wordpress
             MYSQL_PASSWORD: wordpress
         restart: always
+        networks:
+            - backend
     wordpress:
         image: wordpress:5.1.1-php7.1-fpm-alpine
         volumes:
@@ -22,6 +24,9 @@ services:
         depends_on:
             - database
         restart: always
+        networks:
+            - frontend
+            - backend
     nginx:
         image: nginx:latest
         ports:
@@ -33,4 +38,8 @@ services:
         depends_on:
             - wordpress
         restart: always
-    
+        networks:
+            - frontend
+networks:
+    frontend:
+    backend:
