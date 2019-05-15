@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
     database:
@@ -14,9 +14,11 @@ services:
         networks:
             - backend
     wordpress:
-        image: wordpress:5.1.1-php7.1-fpm-alpine
+        build:
+            context: .
+            dockerfile: ./wordpress/Dockerfile
         volumes:
-            - ./wordpress:/var/www/html
+            - ./src/:/var/www/html
         environment:
             WORDPRESS_DB_HOST: database:3306
             WORDPRESS_DB_USER: wordpress
@@ -28,18 +30,33 @@ services:
             - frontend
             - backend
     nginx:
-        image: nginx:latest
+        build:
+            context: .
+            dockerfile: ./nginx/Dockerfile
         ports:
-            - '8080:80'
+            - "8080:80"
         volumes:
-            - ./nginx:/etc/nginx/conf.d
+            - ./nginx/conf.d:/etc/nginx/conf.d
             - ./logs/nginx:/var/log/nginx
-            - ./wordpress:/var/www/html
+            - ./src/:/var/www/html
         depends_on:
             - wordpress
         restart: always
         networks:
             - frontend
+    buildchain:
+        build:
+            context: .
+            dockerfile: ./buildchain/Dockerfile
+        ports:
+            - "3000:3000"
+            - "3001:3001"
+        volumes:
+            - ./src/:/project
+        depends_on:
+            - nginx
+        network_mode: "host"
+
 networks:
     frontend:
     backend:
