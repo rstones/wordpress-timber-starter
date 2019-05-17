@@ -34,7 +34,8 @@ services:
             context: .
             dockerfile: ./nginx/Dockerfile
         ports:
-            - "8080:80"
+            - "80:80"
+            - "443:443"
         volumes:
             - ./nginx/conf.d:/etc/nginx/conf.d
             - ./logs/nginx:/var/log/nginx
@@ -52,7 +53,7 @@ services:
             - "3000:3000"
             - "3001:3001"
         volumes:
-            - ./src/:/project
+            - ./src/wp-content/themes/timber-starter-theme/:/project
         depends_on:
             - nginx
         network_mode: "host"

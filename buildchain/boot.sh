@@ -1,5 +1,5 @@
 #!/bin/sh
 
-cd /project/wp-content/themes/timber-starter-theme
+cd /project
 yarn install
 yarn run watch

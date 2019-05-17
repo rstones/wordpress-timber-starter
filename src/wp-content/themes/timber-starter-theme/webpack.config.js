@@ -41,7 +41,7 @@ module.exports = {
             filename: './css/build/style.css' 
         }),
 	    new BrowserSyncPlugin({
-            proxy: 'localhost:8080',
+            proxy: 'https://localhost',
             port: 3000,
             open: false,
             files: ['./*.php', './templates/**/*.twig']
